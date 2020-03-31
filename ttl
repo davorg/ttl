@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use feature 'say';
+
+use Getopt::Std;
+use List::Util 'first';
+
+my %opts;
+getopts('st:', \%opts);
+
+my $domain = shift;
+
+die "Give me a domain\n" unless defined $domain;
+
+my $show_secs;
+$show_secs = 1 if $opts{s};
+
+my $cmd = "dig $domain";
+
+if ($opts{t}) {
+  $cmd .= " $opts{t}";
+}
+
+my ($line) = first { /$domain\.\s+\d+/ } qx[$cmd];
+
+my ($dur_secs) = $line =~ /\s+(\d+)/;
+
+if ($show_secs) {
+  say $dur_secs;
+  exit;
+}
+
+my $secs = $dur_secs % 60;
+
+my $dur_mins = int ($dur_secs / 60);
+my $mins = $dur_mins % 60;
+
+my $hrs = int ($dur_mins / 60);
+
+say sprintf '%02d:%02d:%02d', $hrs, $mins, $secs;
+
