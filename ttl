@@ -4,11 +4,14 @@ use strict;
 use warnings;
 use feature 'say';
 
+use File::Basename;
 use Getopt::Std;
 use List::Util 'first';
 
 my %opts;
-getopts('st:', \%opts);
+getopts('hst:', \%opts);
+
+usage() if $opts{h};
 
 my $domain = shift;
 
@@ -41,3 +44,18 @@ my $hrs = int ($dur_mins / 60);
 
 say sprintf '%02d:%02d:%02d', $hrs, $mins, $secs;
 
+sub usage {
+  my $me = basename $0;
+
+  say <<"EOT";
+Usage:
+
+  \$ $me [-s] [t type] [-h] domain
+
+* -s: Show TTL in seconds (rather the default HH:MM:SS format)
+* -t: Give a DNS record type to query for the domain
+* -h: Display this help message
+EOT
+
+  exit;
+}
