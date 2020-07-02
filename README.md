@@ -5,10 +5,11 @@ easily-readable formats.
 
 ## Usage
 
-    $ ttl [-s] [t type] domain
+    $ ttl [-s] [t type] -h domain
 
 * -s: Show TTL in seconds (rather the default HH:MM:SS format)
 * -t: Give a DNS record type to query for the domain
+* -h: Display this help message
 
 ## Requirements
 
